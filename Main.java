@@ -1,25 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package atm;
 
-/**
- *
- * @author famil
- */
 public class Main {
     public static void main(String[] args) {
-        Center center = new Center();
-        Bank bank1 = new Bank();
-        bank1.createAccount("123456", 200);
-        center.addBank("1", bank1);
+        
+        Center clearingCenter = new Center();
+        Bank elteBank = new Bank("ELTE_BANK");
+        clearingCenter.registerBank(elteBank);
 
-        ATM atm = new ATM("Downtown", center);
+        Account myAccount = new Account("ACC_1001", 1500.00);
+        Card myCard = new Card("4000-1234-5678-9010", "1234", "ACC_1001");
+        
+        elteBank.addAccount(myAccount);
+        elteBank.addCard(myCard);
 
-        Card card = new Card("123456", "1234");
-        Customer customer = new Customer(card);
+        Customer customer = new Customer("Alex", myCard);
+        
+        ATM atm = new ATM(clearingCenter, 5000.00);
 
-        customer.withdraw(atm);
+        System.out.println("Starting ATM Simulation for " + customer.getName() + "...");
+        
+        atm.requestWithdrawal("ELTE_BANK", customer.getCard(), "1234", 500.00);
+
+        atm.requestWithdrawal("ELTE_BANK", customer.getCard(), "9999", 100.00);
+
+        atm.requestWithdrawal("ELTE_BANK", customer.getCard(), "1234", 2000.00);
     }
 }
